@@ -29,12 +29,13 @@ The file tex2docx.py automatically preps your .tex document and then runs pandoc
 It capture equations with numbering (with some existing caveats), references and citations in Chicago style, figures and tables (with some existing caveats), etc.
 
 
-### How to use this template and workflow
+### How to use this workflow
 
-The file Example/example.tex provides an example that can be used as a quick start guide.
-See the How to use LaTeX section below for instructions on using latex.
-Make sure you take note of the caveats and issues listed below while writing your document.
-After completing your document, run tex2docx.py, making sure to pass the name of the .tex file as an input.
+- The file Example.tex provides an example that can be used as a quick start guide.
+- See the How to use LaTeX section below for instructions on using latex.
+- Make sure you take note of the caveats and issues listed below while writing your document.
+- After completing your document, run tex2docx.py, making sure to pass the name of the .tex file as an input.
+- The file Example.docx illustrates the output associated with running tex2docx on Example.tex
 
 
 
@@ -59,3 +60,9 @@ To number equations correctly, make sure the label starts with *eq:*.  That is, 
 
 - Filters: this code makes use of pandoc filters.  In particular, you need pandoc-xnos.
 
+
+### Pandoc
+
+- Pandoc: https://pandoc.org/
+
+- Pandoc-xnos filter: https://github.com/tomduck/pandoc-xnos

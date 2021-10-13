@@ -183,4 +183,4 @@ def tex2docx(filein=None, fileout=None, cleanup=False, refs=None, template=None)
 
 
 if __name__ == "__main__":
-    tex2docx(filein="test.tex", refs="refs.bib", cleanup=True)
+    tex2docx(filein="Example.tex", refs="refs.bib", cleanup=True)
