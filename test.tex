@@ -1,5 +1,8 @@
 \begin{document}
 
+
+\section{Intro} \label{sec:intro}
+
 \begin{align*}
 1+1 = 2
 \end{align*}
@@ -16,11 +19,17 @@
 1+1 = 2
 \end{equation}
 
+\section{Second} \label{sec:second}
+
 \begin{align} \label{eq:a}
 1+1 = 2
 \end{align}
 
-\begin{equation} \label{eq:b}
+\begin{figure}
+\label{fig:a}
+\end{figure}
+
+\begin{equation} \label{eqn:b}
 1+1 = 2
 \end{equation}
 
@@ -29,18 +38,28 @@
 1+1 = 2
 \end{equation}
 
+\begin{figure}
+\label{fig:b}
+\end{figure}
+
 \ref{eq:a}
 
-\ref{eq:b}
+Section \ref{sec:intro}
+
+\ref{eqn:b}
+
+Section \ref{sec:second}
 
 \ref{eq:c}
 
 \eqref{eq:a}
 
-\eqref{eq:b}
+\eqref{eqn:b}
 
 \eqref{eq:c}
 
+Figure \ref{fig:a}
 
+Figure \ref{fig:b}
 
 \end{document}

@@ -78,80 +78,97 @@ def tabularize_eqns(fin, eqn_ids, cleanup=True):
     return fout
 
 
-def tex_eqn_ids(fin, eqn_flags=None, cleanup=True):
-    if eqn_flags is None:
-        eqn_flags = [r"\label{eq:"]
+def tex_label_ids(fin, id_flags=None, cleanup=True):
+    label_flag = r"\label{"
+    if id_flags is None:
+        id_flags = ["eq:", "eqn:"]
+    id_flags = [label_flag + e for e in id_flags]
     tempfile = fin.replace(".tex", "_temp.tex")
     copy2(src=fin, dst=tempfile)
     count = 0
-    eqn_labels = []
+    id_labels = []
     lookups = []
-    eqn_labels2 = []
-    eqn_ids = {}
+    id_labels2 = []
+    ids = {}
     with open(tempfile) as fp:
         for line in fp:
             count += 1
             # print("Line{}: {}".format(count, line.strip()))
-            for a in eqn_flags:
+            for a in id_flags:
                 if a in line:
-                    eqn_labels = eqn_labels + [line]
+                    id_labels = id_labels + [line]
                     lookups = lookups + [a]
     # print("================")
-    # for e in eqn_labels:
+    # for e in id_labels:
     #     print(e)
     # print("================")
-    for i in range(len(eqn_labels)):
-        tempe = eqn_labels[i].split(lookups[i])
+    for i in range(len(id_labels)):
+        tempe = id_labels[i].split(lookups[i])
         tempe = tempe[1].split(r"}")
         id = tempe[0]
-        eqn_labels2 = eqn_labels2 + [lookups[i] + id + "}"]
-    eqn_labels2_unique = unique(eqn_labels2)
-    if len(eqn_labels2) != len(eqn_labels2_unique):
+        id_labels2 = id_labels2 + [lookups[i] + id + "}"]
+    id_labels2_unique = unique(id_labels2)
+    if len(id_labels2) != len(id_labels2_unique):
         print("WARNING")
     id_count = 0
-    for e in eqn_labels2_unique:
+    for e in id_labels2_unique:
         id_count += 1
         id = e.split(r"\label")
-        eqn_ids[id[1]] = str(id_count)
-    print(eqn_ids)
+        ids[id[1]] = str(id_count)
+    print(ids)
     # print("================")
     if cleanup:
         os.remove(tempfile)
-    return eqn_ids
+    return ids
 
 
-def tex_eqn_number(fin, eqn_ids):
+def tex_number_ref(fin, ids, label_prefix=None):
     tempfile = fin.replace(".tex", "_temp.tex")
-    count = 0
-    with open(fin) as fi:
-        with open(tempfile, "wt") as fo:
-            for line in fi:
-                count += 1
-                for id,n in eqn_ids.items():
-                    if id in line:
-                        print(line)
-                        line = line.replace(r"\label" + id, "(" + n + ")")
-                        line = line.replace(r"\ref" + id, n)
-                        line = line.replace(r"\eqref" + id, "(" + n + ")")
-                        print(line)
-                fo.write(line)
+    # count = 0
+    if len(ids) > 0:
+        with open(fin) as fi:
+            with open(tempfile, "wt") as fo:
+                for line in fi:
+                    # count += 1
+                    for id,n in ids.items():
+                        if id in line:
+                            print(line)
+                            if label_prefix is None:
+                                line = line.replace(r"\label" + id, "(" + n + ")")
+                            else:
+                                line = line.replace(r"\label" + id, label_prefix + n)
+                            line = line.replace(r"\ref" + id, n)
+                            line = line.replace(r"\eqref" + id, "(" + n + ")")
+                            print(line)
+                    fo.write(line)
+    else:
+        tempfile = fin
     return tempfile
 
 
-def prep_eqns(fin, eqn_flags=None, cleanup=True):
-    if eqn_flags is None:
-        eqn_flags = [r"\label{eq:"]
-    eqn_ids = tex_eqn_ids(fin, eqn_flags=eqn_flags, cleanup=cleanup)
-    midfile = tabularize_eqns(fin, eqn_ids, cleanup=cleanup)
-    newfile = tex_eqn_number(midfile, eqn_ids)
+def prep_eqns(fin, id_flags=None, cleanup=True):
+    if id_flags is None:
+        id_flags = ["eq:", "eqn:"]
+    ids = tex_label_ids(fin, id_flags=id_flags, cleanup=cleanup)
+    midfile = tabularize_eqns(fin, ids, cleanup=cleanup)
+    newfile = tex_number_ref(midfile, ids)
     if cleanup:
         os.remove(midfile)
     return newfile
 
 
+def prep_figs(fin, id_flags=None, cleanup=True):
+    if id_flags is None:
+        id_flags = ["fig:"]
+    ids = tex_label_ids(fin, id_flags=id_flags, cleanup=cleanup)
+    newfile = tex_number_ref(fin, ids, label_prefix="Figure ")
+    return newfile
+
+
 if __name__ == "__main__":
-    filein = "test.tex"
-    # eqn_flags = [r"\label{eq:"]
-    # eids = tex_eqn_ids(fin=filein, eqn_flags=eqn_flags)
-    # newfile = tabularize_eqns(filein, eqn_ids=eids)
-    newfile = prep_eqns(filein)
+    fin = "test.tex"
+    # eids = tex_label_ids(fin=fin, id_flags=["eq:", "eqn:"])
+    # fids = tex_label_ids(fin=fin, id_flags=["fig:"])
+    # newfile = tabularize_eqns(fin, eqn_ids=eids)
+    newfile = prep_eqns(fin)
+    newfile2 = prep_figs(newfile)
