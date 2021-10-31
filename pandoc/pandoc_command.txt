@@ -1,0 +1,3 @@
+### Single command line way to run pandoc, but you may miss some things.  Pandoc + filters are getting better though!
+
+pandoc -s [input file name].tex --reference-doc=[your template].dotx --table-of-contents --standalone --filter pandoc-xnos --bibliography=refs.bib --csl=chicago-author-date.csl --citeproc -o [output file name].docx
