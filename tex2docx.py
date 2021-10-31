@@ -26,7 +26,6 @@ def tabularize_eqns(fin, eqn_ids, cleanup=True):
     eqn_starts = []
     eqn_ends = []
     eqn_replace = []
-    newlines = []
     for e in eqn_lookups:
         eqn_start = r"\begin{" + e + r"}"
         eqn_end = r"\end{" + e + r"}"
