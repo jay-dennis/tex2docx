@@ -57,6 +57,7 @@ That is, if you don't care about the conversion to .docx, then write your equati
 This does not affect the .tex or .pdf versions, obviously.
 When converting to .docx, ensure that you do not have any commented out labels, e.g. *%\label{}*.
 To number equations correctly, make sure the label starts with *eq:*.  That is, the label for an equation should be something like *\label{eq: Pythagorean Theorem}*.
+  - Update: label flags can now be specified.  The default for equations is ["eq:", "eqn:"], and the default for figures is ["fig:" ]
 
 - Filters: this code makes use of pandoc filters.  In particular, you need pandoc-xnos.
 
