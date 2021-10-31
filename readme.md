@@ -18,15 +18,15 @@ a .docx document.
 ### How it works
 
 To convert your .tex file with references, etc. to .docx (Word) format, you need pandoc.
-A single pandoc command will convert your .tex document to a somewhat IDA styled .docx, but at this time, the title page, and formatting for figures, tables, equation numbering, and associated cross-references are not supported with the single command line conversion.
+A single pandoc command will convert your .tex document to a somewhat coherent .docx, but at this time, equation, table, and figure numbering and associated cross-references are not supported with the single command line conversion.  Some filters, such as pandoc-xnos, attempt to fix these issues, but they also have ongoing issues.
 The conversion command is found in the pandoc directory.
-Pandoc does not support all of the tex features that can be used to directly produce a nicely rendered pdf, so your .tex document may require some prepping before running pandoc, and some features may be incompatible with .docx format.
-If you don't do this prep work, then pandoc will typically tell you what it can't handle.
+Note that pandoc does not support all of the tex features that can be used to directly produce a nicely rendered pdf, so your .tex document may require some prepping before running pandoc, and some features may be incompatible with .docx format.
+If you don't do this prep work, then pandoc will often, but not always, tell you what it can't handle.
 If something isn't compatible with the conversion to .docx, then you may or may not get an error message from pandoc; that is, pandoc may just ignore the incompatible feature as is done with equation numbering.
 For this reason, the python code in tex2docx.py does much of this prep work to address incompatibilities, but it requires that the input .tex file follow some standardized rules described below.
 The file tex2docx.py automatically preps your .tex document and then runs pandoc to produce your .docx converted file.
 
-It capture equations with numbering (with some existing caveats), references and citations in Chicago style, figures and tables (with some existing caveats), etc.
+It captures equations with numbering (with some existing caveats), references and citations in a reference style of your choice, figures and tables (with some existing caveats), etc.
 
 
 ### How to use this workflow
