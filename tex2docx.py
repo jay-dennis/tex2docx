@@ -139,11 +139,11 @@ def prep_eqns(fin, id_flags=None, cleanup=True):
     return newfile
 
 
-def prep_figs(fin, id_flags=None, cleanup=True):
+def prep_figs(fin, id_flags=None, cleanup=True, label_prefix="Figure "):
     if id_flags is None:
         id_flags = ["fig:"]
     ids = tex_label_ids(fin, id_flags=id_flags, cleanup=cleanup)
-    newfile = tex_number_ref(fin, ids, label_prefix="Figure ")
+    newfile = tex_number_ref(fin, ids, label_prefix=label_prefix)
     return newfile
 
 
@@ -206,13 +206,15 @@ def tex2docx(filein=None, fileout=None, cleanup=False, refs=None, template=None,
         refs = "refs.bib"
     tempfile1 = prep_eqns(filein, cleanup=cleanup)
     tempfile2 = prep_figs(tempfile1)
-    tempfile3 = pref_file(file=tempfile2)
-    run_pandoc(file_in=tempfile3, file_out=fileout, refs=refs, template=template, toc=toc, header=header, ref_style=ref_style)
+    tempfile3 = prep_figs(tempfile2, id_flags=["tab:"], cleanup=True, label_prefix="Table ")
+    tempfile4 = pref_file(file=tempfile3)
+    run_pandoc(file_in=tempfile4, file_out=fileout, refs=refs, template=template, toc=toc, header=header, ref_style=ref_style)
     if cleanup:
         print("Removing temporary files...")
         os.remove(tempfile1)
         os.remove(tempfile2)
         os.remove(tempfile3)
+        os.remove(tempfile4)
     return None
 
 
