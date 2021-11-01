@@ -159,6 +159,7 @@ def pref_file(file=None, fileout=None):
     for line in Lines:
         for a in replace_these_things.keys():
             if a in line:
+                print("Commenting out certain commands...")
                 print("Replacing some code...")
                 line = line.replace(a, replace_these_things[a])
         Lines[count] = line
