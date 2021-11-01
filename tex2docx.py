@@ -202,7 +202,7 @@ def tex2docx(filein=None, fileout=None, cleanup=False, refs=None, template=None)
 
 
 if __name__ == "__main__":
-    fin = "test.tex"
+    # fin = "test.tex"
     # eids = tex_label_ids(fin=fin, id_flags=["eq:", "eqn:"])
     # fids = tex_label_ids(fin=fin, id_flags=["fig:"])
     # newfile = tabularize_eqns(fin, eqn_ids=eids)
