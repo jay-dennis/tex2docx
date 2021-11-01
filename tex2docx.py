@@ -206,16 +206,16 @@ def tex2docx(filein=None, fileout=None, cleanup=False, refs=None, template=None,
     if refs is None:
         refs = "refs.bib"
     tempfile1 = prep_eqns(filein, cleanup=cleanup)
-    tempfile2 = prep_figs(tempfile1)
-    tempfile3 = prep_figs(tempfile2, id_flags=["tab:"], cleanup=True, label_prefix="Table ")
+    tempfile2 = prep_figs(tempfile1, cleanup=cleanup)
+    tempfile3 = prep_figs(tempfile2, id_flags=["tab:"], cleanup=cleanup, label_prefix="Table ")
     tempfile4 = pref_file(file=tempfile3)
     run_pandoc(file_in=tempfile4, file_out=fileout, refs=refs, template=template, toc=toc, header=header, ref_style=ref_style)
     if cleanup:
         print("Removing temporary files...")
-        os.remove(tempfile1)
-        os.remove(tempfile2)
-        os.remove(tempfile3)
-        os.remove(tempfile4)
+        tempfiles = [tempfile1, tempfile2, tempfile3, tempfile4]
+        for f in tempfiles:
+            if os.path.isfile(f):
+                os.remove(f)
     return None
 
 
