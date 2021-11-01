@@ -169,22 +169,37 @@ def pref_file(file=None, fileout=None):
     return fileout
 
 
-def run_pandoc(file_in=None, file_out=None, refs=None, template=None):
+def run_pandoc(file_in=None, file_out=None, refs=None, template=None, toc=True, header=None, ref_style=None):
     if file_out is None:
         file_out = file_in.replace(".tex", ".docx")
     if refs is None:
-        refs = "refs.bib"
+        refs_command = " --bibliography=refs.bib"
+    else:
+        refs_command = " --bibliography=" + refs
     if template is None:
-        pandoc_command = "pandoc -s " + file_in + " --table-of-contents --standalone --filter pandoc-xnos --bibliography=" + refs + " --csl=./pandoc/chicago-author-date.csl --citeproc -o " + file_out
-    if template is not None:
-        pandoc_command = "pandoc -s " + file_in + " --reference-doc=" + template + " --table-of-contents --standalone --filter pandoc-xnos --bibliography=" + refs + " --csl=./pandoc/chicago-author-date.csl --citeproc -o " + file_out
+        template_command = ""
+    else:
+        template_command = " --reference-doc=" + template
+    if toc:
+        table_of_contents = " --table-of-contents"
+    else:
+        table_of_contents = ""
+    if header is None:
+        header_command = ""
+    else:
+        header_command = " -H " + header
+    if ref_style is None:  # default to chicago style
+        ref_style_command = " --csl=./pandoc/chicago-author-date.csl"
+    else:
+        ref_style_command = " --csl=" + ref_style
+    pandoc_command = "pandoc -s " + file_in + header_command + template_command + table_of_contents + " --standalone --filter pandoc-xnos" + refs_command + ref_style_command + " --citeproc -o " + file_out
     print("Running pandoc: ")
     print(pandoc_command)
     os.system(pandoc_command)
     return None
 
 
-def tex2docx(filein=None, fileout=None, cleanup=False, refs=None, template=None):
+def tex2docx(filein=None, fileout=None, cleanup=False, refs=None, template=None, toc=True, header=None, ref_style=None):
     if fileout is None:
         fileout = "\"" + filein.replace(".tex", ".docx") + "\""
     if refs is None:
@@ -192,7 +207,7 @@ def tex2docx(filein=None, fileout=None, cleanup=False, refs=None, template=None)
     tempfile1 = prep_eqns(filein, cleanup=cleanup)
     tempfile2 = prep_figs(tempfile1)
     tempfile3 = pref_file(file=tempfile2)
-    run_pandoc(file_in=tempfile3, file_out=fileout, refs=refs, template=template)
+    run_pandoc(file_in=tempfile3, file_out=fileout, refs=refs, template=template, toc=toc, header=header, ref_style=ref_style)
     if cleanup:
         print("Removing temporary files...")
         os.remove(tempfile1)
